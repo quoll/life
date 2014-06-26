@@ -2,7 +2,7 @@
   (:use [clojure.core.matrix])
   (:import [java.awt Graphics Color Dimension]
            [java.awt.image BufferedImage]
-           [java.awt.event KeyListener KeyEvent]
+           [java.awt.event KeyListener KeyEvent WindowListener WindowEvent]
            [javax.swing JPanel JFrame SwingUtilities]))
 
 (def sq "size of a square in pixels" 25)
@@ -13,7 +13,7 @@
 (def life-color Color/BLUE)
 
 (def image (atom nil))
-(def canvas (atom nil))
+(def canvas (atom :uninitialized))
 
 (defn ^Graphics render
   "Render an array onto an image"
@@ -38,9 +38,11 @@
 
 (defn draw
   [^BufferedImage i]
-  (when @canvas
-    (swap! image (constantly i))
-    (.repaint @canvas 0 0 0 (.getWidth @canvas) (.getHeight @canvas))))
+  (when (not (nil? @canvas))
+    (when (and (not= :uninitialized @canvas) (.isVisible @canvas))
+      (swap! image (constantly i))
+      (.repaint @canvas 0 0 0 (.getWidth @canvas) (.getHeight @canvas))))
+  @canvas)
 
 (defn new-drawer []
   (proxy [JPanel] []
@@ -50,20 +52,33 @@
         (when @image
           (.drawImage graphics-context @image 0 0 width height nil))))))
 
+(defn set-closed [] (swap! canvas (constantly nil)))
+
 (defn show-window []
   (let [^JPanel drawing-obj (new-drawer)
         _ (swap! canvas (constantly drawing-obj))
         ^JFrame frame (JFrame. window-name)
         closer (proxy [KeyListener] []
-                 (keyPressed [^KeyEvent e] (when (= (.getKeyChar e) \q) (.dispose frame)))
+                 (keyPressed [^KeyEvent e]
+                   (when (= (.getKeyChar e) \q)
+                     (.dispose frame)))
                  (keyReleased [e])
-                 (keyTyped [e]))]
+                 (keyTyped [e]))
+        wnd-listen (proxy [WindowListener][]
+                     (windowActivated [e])
+                     (windowClosed [e] (set-closed))
+                     (windowClosing [e] (set-closed))
+                     (windowDeactivated [e])
+                     (windowDeiconified [e])
+                     (windowIconified [e])
+                     (windowOpened [e]))]
     (.setPreferredSize drawing-obj (Dimension. default-width default-height))
     (.add (.getContentPane frame) drawing-obj)
     (doto frame
       (.pack)
       (.setBackground Color/WHITE)
       (.addKeyListener closer)
+      (.addWindowListener wnd-listen)
       (.setVisible true))))
 
 (defn open-window []
