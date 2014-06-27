@@ -14,6 +14,7 @@
 
 (def current-image (atom nil))
 (def canvas (atom :uninitialized))
+(def may-exit (atom false))
 
 (defn ^Graphics render
   "Render an array onto an image"
@@ -52,7 +53,11 @@
         (when @current-image
           (.drawImage graphics-context @current-image 0 0 width height nil))))))
 
-(defn set-closed [] (swap! canvas (constantly nil)))
+(defn set-closed []
+  (swap! canvas (constantly nil))
+  (when @may-exit (System/exit 0)))
+
+(defn inform-exitable [] (swap! may-exit (constantly true)))
 
 (defn show-window []
   (let [^JPanel drawing-obj (new-drawer)

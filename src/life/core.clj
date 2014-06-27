@@ -28,5 +28,6 @@
 
 (defn -main [& args]
   (open-window)
-  (power-limit draw-life RR))
+  (power-limit draw-life RR)
+  (inform-exitable))
 
