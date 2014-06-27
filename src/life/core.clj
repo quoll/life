@@ -21,11 +21,10 @@
                    [3 4]))))
 
 (defn draw-life [o]
-  (let [r (life o)]
-    (if (draw (pic r))
-      (Thread/sleep 125)
-      (System/exit 0))
-    r))
+  (if (draw (image o))
+    (Thread/sleep 125)
+    (System/exit 0))
+  (life o))
 
 (defn -main [& args]
   (open-window)

@@ -7,12 +7,12 @@
 
 (def sq "size of a square in pixels" 25)
 (def window-name "Life")
-(def default-width 600)
-(def default-height 400)
+(def default-width 700)
+(def default-height 300)
 
 (def life-color Color/BLUE)
 
-(def image (atom nil))
+(def current-image (atom nil))
 (def canvas (atom :uninitialized))
 
 (defn ^Graphics render
@@ -28,19 +28,19 @@
           (.setColor g Color/BLUE)
           (pl x y))))))
 
-(defn pic
+(defn image
   "Convert an array to an image"
   [a]
   (let [[height width] (shape a)
-        image (BufferedImage. (* sq width) (* sq height) BufferedImage/TYPE_INT_RGB)]
-    (render (.createGraphics image) a)
-    image))
+        img (BufferedImage. (* sq width) (* sq height) BufferedImage/TYPE_INT_RGB)]
+    (render (.createGraphics img) a)
+    img))
 
 (defn draw
   [^BufferedImage i]
   (when (not (nil? @canvas))
     (when (and (not= :uninitialized @canvas) (.isVisible @canvas))
-      (swap! image (constantly i))
+      (swap! current-image (constantly i))
       (.repaint @canvas 0 0 0 (.getWidth @canvas) (.getHeight @canvas))))
   @canvas)
 
@@ -49,8 +49,8 @@
     (paint [^Graphics graphics-context]
       (let [^int width (proxy-super getWidth)
             ^int height (proxy-super getHeight)]
-        (when @image
-          (.drawImage graphics-context @image 0 0 width height nil))))))
+        (when @current-image
+          (.drawImage graphics-context @current-image 0 0 width height nil))))))
 
 (defn set-closed [] (swap! canvas (constantly nil)))
 
