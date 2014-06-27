@@ -69,7 +69,7 @@
 
 ;; Since the outer-product function is not standard in Clojure, a similar effect
 ;; can be made by performing the vertical rotations first, using the mapping
-;; echnique above, followed by the horizontal rotations. These are done by mapping
+;; technique above, followed by the horizontal rotations. These are done by mapping
 ;; the horizontal rotation operation across each element of the vertical-rotated
 ;; matrix vector
 (disp (map (fn [d] (map #(rotate %2 1 %1) [1 0 -1] (repeat d)))
