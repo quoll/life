@@ -76,12 +76,12 @@
            (map #(rotate %2 0 %1) [1 0 -1] (repeat R))))
 
 ;; Matrices return rows preferentially over columns using the "slices" function.
-;; There is a variation of this function that can return columns, but this has not
-;; yet been implemented
+;; We can select columns by selecting slices in the second dimension instead of
+;; the default first dimension. Visually, this will transpose the grid.
+(disp (slices ((outer-fn rotate [1 0 -1] [1 0 -1]) R) 1))
 
-;; If we do a column sum of the 3x3 matrix we get a 3 vector - horizontally, though
-;; it represents a single column sum across each row
-(disp (map (partial apply add) (slices ((outer-fn rotate [1 0 -1] [1 0 -1]) R))))
+;; If we do a column sum of the 3x3 matrix we get a 3 vector
+(disp (map (partial apply add) (slices ((outer-fn rotate [1 0 -1] [1 0 -1]) R) 1)))
 
 ;; And if we sum the vector we see a "neighbor count" for each cell in our original
 ;; matrix R
