@@ -64,14 +64,7 @@
 (defn power [f n]
   "Returns a function that applies f n times.
    e.g. ((power inc 3) 2) => 5"
-  (case n
-    0 identity
-    1 f
-    (fn [x]
-      (loop [r x, i n]
-        (if (zero? i)
-          r
-          (recur (f r) (dec i)))))))
+  #(nth (iterate f %) n))
 
 (defn power-limit
   "Finds the fixpoint of a function starting at a given argument.
