@@ -72,9 +72,8 @@
    until the result from the function is the same as the argument that led to it.
    e.g. (power-limit #(min (inc %) 10) 1) => 10"
   [f a]
-  (loop [a a]
-    (let [r (f a)]
-      (if (= r a)
-        r
-        (recur r)))))
+  (let [s (iterate f a)]
+    (ffirst
+      (drop-while (fn [[x y]] (not= x y))
+                  (map vector s (rest s))))))
 
