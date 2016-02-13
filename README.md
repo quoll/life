@@ -5,7 +5,10 @@ Clojure Version of APL Life.
 This is a reimplementation of the REPL driven APL implementation
 shown on https://www.youtube.com/watch?v=a9xAKttWgP4
 
-Just execute `lein run`.
+The video presentation is at https://youtu.be/BO4GmTbAycM
+(the very first operation displays some garbage in the buffer. This needs to be fixed in a new video.)
+
+To execute this code, just execute `lein run`.
 
 ## The Demo Code
 
