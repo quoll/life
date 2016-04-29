@@ -51,6 +51,6 @@ purpose).
 
 ## License
 
-Copyright © 2014 Paul Gearon
+Copyright © 2014 Paula Gearon
 
 Distributed under the APL 2.0
