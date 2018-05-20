@@ -1,6 +1,7 @@
 (ns life.matrix
   "Implements functionality to duplicate APL operations used in Life"
-  (:use [clojure.core.matrix]))
+  (:require [clojure.core.matrix :refer [shape compute-matrix mget
+                                         emap add array]]))
 
 (defn nbool
   "Create a function from a boolean function, mapping a truthy value to 1 or 0.
