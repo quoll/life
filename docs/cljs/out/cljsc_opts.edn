@@ -1,0 +1,1 @@
+{:output-wrapper false, :externs ["closure-js/externs"], :libs ["closure-js/libs"], :main "life.web", :asset-path "cljs/out", :output-to "resources/public/cljs/main.js", :output-dir "resources/public/cljs/out"}
